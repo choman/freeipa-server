@@ -1,0 +1,41 @@
+#!/bin/bash
+
+args=$@
+
+##if [ -z "$args" ]; then
+##   echo "usage: "
+##   exit
+##fi
+
+##username=$(echo $args | cut -d: -f1)
+##fullname=$(echo $args | cut -d: -f2)
+
+username=${args%:*}
+fullname=${args##*:}
+first=${fullname% *}
+last=${fullname##* }
+
+echo "\$username  = ($username)"
+echo "\$fullname  = ($fullname)"
+echo "  - \$first = ($first)"
+echo "  - \$last  = ($last)"
+
+ans=$(mktemp)
+echo "\$ans = $ans"
+echo abcd1234 > $ans
+
+if false; then
+    docker exec -it  freeipa-server-container  " \
+        kinit admin  \
+        ipa user-add $username --first=$first --last=$last \
+                               --shell=/bin/bash --password  \
+    " < $ans
+
+else 
+    echo "until fixed"
+
+    docker exec -it  freeipa-server-container /opt/scripts/adduser $@
+
+fi
+
+

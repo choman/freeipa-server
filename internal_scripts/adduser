@@ -1,0 +1,30 @@
+#!/bin/bash
+
+args=$@
+
+if [ -z "$args" ]; then
+   echo "usage: adduser [username:Full name]"
+   exit
+fi
+
+##username=$(echo $args | cut -d: -f1)
+##fullname=$(echo $args | cut -d: -f2)
+
+username=${args%:*}
+fullname=${args##*:}
+first=${fullname% *}
+last=${fullname##* }
+
+echo "\$username  = ($username)"
+echo "\$fullname  = ($fullname)"
+echo "  - \$first = ($first)"
+echo "  - \$last  = ($last)"
+
+ans=$(mktemp)
+echo "\$ans = $ans"
+echo abcd1234 > $ans
+
+kinit admin < $ans
+echo "Passwd#123" > $ans
+ipa user-add $username --first=$first --last=$last --shell=/bin/bash --password < $ans
+
