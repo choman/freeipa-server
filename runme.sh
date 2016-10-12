@@ -3,8 +3,10 @@
 . myenv
 echo $REALM
 
-which docker-compose2 > /dev/null
+#
+# not using docker-compose yet
 which docker-compose > /dev/null
+which docker-compose2 > /dev/null
 rval=$?
 
 
@@ -19,7 +21,7 @@ fi
 
 if [ $rval -eq 1 ]; then
     echo "using: docker"
-    docker run --name freeipa-server-container -ti --rm \
+    docker run --name freeipa-server-container -it  \
            --privileged \
            -h $HOSTNAME \
            -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
