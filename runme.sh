@@ -1,15 +1,11 @@
 #!/bin/bash
 
-REALM=example
+. myenv
+echo $REALM
 
-DS_PASSWD=abcd1234
-ADMIN_PASSWD=abcd1234
-DATADIR=/var/lib/ipa-data
-IPADDR=10.130.1.250
-
-DOMAIN=${REALM}.com
-HOSTNAME=ipa.${DOMAIN}
-
+which docker-compose2 > /dev/null
+which docker-compose > /dev/null
+rval=$?
 
 
 if [ ! -d "$DATADIR" ]; then
@@ -21,7 +17,9 @@ fi
            #--tmpfs /run --tmpfs /tmp \
            #-e IPA_SERVER_IP=$IPADDR \
 
-docker run --name freeipa-server-container -ti --rm \
+if [ $rval -eq 1 ]; then
+    echo "using: docker"
+    docker run --name freeipa-server-container -ti --rm \
            --privileged \
            -h $HOSTNAME \
            -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
@@ -43,4 +41,9 @@ docker run --name freeipa-server-container -ti --rm \
            --ds-password=$DS_PASSWD \
            --admin-password=$ADMIN_PASSWD
 
+else
+    echo "using: docker-compose"
+    export REALM DS_PASSWD ADMIN_PASSWD DATADIR IPADDR DOMAIN HOSTNAME
+    docker-compose up --no-recreate -d
 
+fi

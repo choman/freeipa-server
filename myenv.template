@@ -1,0 +1,7 @@
+REALM=example
+DS_PASSWD=<DS passwd>
+ADMIN_PASSWD=<DS passwd>
+DATADIR=/var/lib/ipa-data
+IPADDR=<docker host ip>
+DOMAIN=${REALM}.com
+HOSTNAME=ipa.${DOMAIN}

@@ -15,3 +15,5 @@ NOTE: currently contains 2 submodules to assist in maintaining
 So essentially this is for informational purposes — But could be used to 
 run a freeIPA server
 
+
+server https://localhost:/ipa/ui

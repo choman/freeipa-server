@@ -1,0 +1,72 @@
+version: '2'
+
+services:
+    freeipa-server:
+        build:
+            context: ./docker-freeipa
+            dockerfile: Dockerfile.centos-7
+        image: freeipa-server
+        restart: always
+        privileged: true
+        container_name: freeipa-server-container
+        env_file: ./myenv
+        hostname: $HOSTNAME
+        tmpfs:
+            - /run
+            - /tmp
+        ports:
+            - "80:80"
+            - "443:443"
+            - "389:389"
+            - "636:636"
+            - "88:88"
+            - "464:464"
+            - "88:88/udp"
+            - "464:464/udp"
+            - "7389:7389"
+            - "9443:9443"
+            - "9444:9444"
+            - "9445:9445"
+        volumes:
+           - /sys/fs/cgroup:/sys/fs/cgroup:ro
+           - ./internal_scripts:/opt/scripts
+           - ${DATADIR}:/data:Z
+        command: 
+           - --realm=$DOMAIN
+           - --domain=$DOMAIN
+           - --hostname=$HOSTNAME
+           - --no-host-dns
+           - --no-ntp
+           - --ds-password=$DS_PASSWD
+           - --admin-password=$ADMIN_PASSWD
+
+
+##volumes:
+##    cgroup:
+##        /sys/fs/cgroup:ro
+##
+ ##   scripts:
+##        `pwd`/internal_scripts
+##           -v ${DATADIR}:/data:Z \
+
+##if [ ! -d "$DATADIR" ]; then
+##   sudo mkdir $DATADIR
+##fi
+
+           #-p 53:53/udp -p 53:53 \
+           #-p 123:123/udp \
+           #--tmpfs /run --tmpfs /tmp \
+           #-e IPA_SERVER_IP=$IPADDR \
+
+##docker run --name freeipa-server-container -ti --rm \
+##           -h $HOSTNAME \
+##           freeipa-server \
+##           --realm=$DOMAIN \
+##           --domain=$DOMAIN \
+##           --hostname=$HOSTNAME \
+##           --no-host-dns \
+##           --no-ntp \
+##           --ds-password=$DS_PASSWD \
+##           --admin-password=$ADMIN_PASSWD
+
+
