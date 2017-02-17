@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# awesome
+dockerfile=$(basename ${1-Dockerfile.centos-7})
+
 #
 # not using docker-compose yet
 which docker-compose > /dev/null
