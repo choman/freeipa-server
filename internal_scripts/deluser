@@ -3,7 +3,7 @@
 args=$@
 
 if [ -z "$args" ]; then
-   echo "usage: "
+   echo "usage: adduser [username:Full name]"
    exit
 fi
 
@@ -24,18 +24,7 @@ ans=$(mktemp)
 echo "\$ans = $ans"
 echo abcd1234 > $ans
 
-if false; then
-    docker exec -it  freeipa-server-container  " \
-        kinit admin  \
-        ipa user-add $username --first=$first --last=$last \
-                               --shell=/bin/bash --password  \
-    " < $ans
-
-else 
-    echo "until fixed"
-
-    docker exec -it  freeipa-server-container /opt/scripts/adduser $@
-
-fi
-
+kinit admin < $ans
+echo "Passwd#123" > $ans
+ipa user-del $username < $ans
 

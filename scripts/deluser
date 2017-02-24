@@ -27,14 +27,13 @@ echo abcd1234 > $ans
 if false; then
     docker exec -it  freeipa-server-container  " \
         kinit admin  \
-        ipa user-add $username --first=$first --last=$last \
-                               --shell=/bin/bash --password  \
+        ipa user-del $username
     " < $ans
 
 else 
     echo "until fixed"
 
-    docker exec -it  freeipa-server-container /opt/scripts/adduser $@
+    docker exec -it  freeipa-server-container /opt/scripts/deluser $@
 
 fi
 

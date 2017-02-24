@@ -21,8 +21,9 @@ fi
 
 if [ $rval -eq 1 ]; then
     echo "using: docker"
-    docker run --name freeipa-server-container -it  \
+    docker run --name freeipa-server-container \
            --privileged \
+           --restart always \
            -h $HOSTNAME \
            -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
            -v `pwd`/internal_scripts:/opt/scripts:ro \
