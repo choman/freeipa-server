@@ -1,6 +1,4 @@
 [submodule "docker-freeipa"]
 	path = docker-freeipa
 	url = https://github.com/adelton/docker-freeipa.git
-[submodule "gitconfig"]
-	path = gitconfig
-	url = https://github.com/choman/gitconfig.git
+
